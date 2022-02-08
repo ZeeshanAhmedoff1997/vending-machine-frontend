@@ -10,7 +10,7 @@ import { addUser } from "redux/userSlice";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import { isAlreadyLogin } from "utils/alert";
+import { isSignedIn } from "utils/alert";
 
 const Login = () => {
   const router = useRouter();
@@ -43,7 +43,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (isAlreadyLogin(user)) {
+    if (isSignedIn(user)) {
       router.push("/");
     }
   }, [router, user]);

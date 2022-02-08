@@ -12,14 +12,20 @@ export const userSlice = createSlice({
       state.user = payload;
     },
     updateUser: (state, { payload } = action) => {
-      state.user = payload;
+      state.user.email = payload.email;
+      state.user.name = payload.name;
+      state.user.role = payload.role;
     },
-    deleteUser: (state) => {
+    removeUser: (state) => {
       state.user = null;
+    },
+    updateUserImage: (state, { payload } = action) => {
+      state.user.image = payload;
     },
   },
 });
 
-export const { addUser, updateUser, deleteUser } = userSlice.actions;
+export const { addUser, updateUser, removeUser, updateUserImage } =
+  userSlice.actions;
 
 export default userSlice.reducer;

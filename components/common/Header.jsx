@@ -1,15 +1,33 @@
 import React from "react";
 import { Link } from "components/common/Link";
 import { useSelector } from "react-redux";
+import { isSignedIn } from "utils/alert";
+import { logout } from "services/auth";
+import { useRouter } from "next/router";
+import { useAppDispatch } from "redux/hooks";
+import { removeUser } from "redux/userSlice";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const { user } = useSelector((state) => state.user);
+  const router = useRouter();
+  const appDispatch = useAppDispatch();
+
+  const Logout = async () => {
+    try {
+      await logout();
+      router.push("/auth/login");
+      appDispatch(removeUser());
+      toast.success("Successfully log out !");
+    } catch (err) {}
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light header">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">
+        <Link className="navbar-brand" href="/">
           Vending Machine
-        </a>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -26,7 +44,7 @@ const Header = () => {
           id="navbarNav"
         >
           <ul className="navbar-nav">
-            {user && (
+            {isSignedIn(user) && (
               <>
                 <li className="nav-item c-nav-item">
                   <Link
@@ -41,7 +59,7 @@ const Header = () => {
                   <Link
                     className="nav-link active"
                     aria-current="page"
-                    href="/"
+                    href={`/user/${user.id}`}
                   >
                     Account
                   </Link>
@@ -59,9 +77,32 @@ const Header = () => {
                   <Link
                     className="nav-link active"
                     aria-current="page"
-                    href="/"
+                    onClick={Logout}
+                    href=""
                   >
                     Logout
+                  </Link>
+                </li>
+              </>
+            )}
+            {!isSignedIn(user) && (
+              <>
+                <li className="nav-item c-nav-item">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    href="/auth/login"
+                  >
+                    Sign In
+                  </Link>
+                </li>
+                <li className="nav-item c-nav-item">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    href="/auth/register"
+                  >
+                    Register
                   </Link>
                 </li>
               </>

@@ -6,14 +6,13 @@ import UserDetails from "components/UserDetails";
 
 const UserInfo = () => {
   const { user } = useSelector((state) => state.user);
-
   return (
     <Layout col={6} offst={3}>
       <UserDetails user={user} />
     </Layout>
   );
 };
-
+// export default UserInfo;
 export default AuthenticatedRoute(UserInfo, {
   pathAfterFailure: "/auth/login",
 });

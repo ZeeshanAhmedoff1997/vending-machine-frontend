@@ -1,8 +1,12 @@
 import React from "react";
 import Router from "next/router";
 import { connect } from "react-redux";
-import { addUser } from "redux/userSlice";
-import { validateUser } from "services/auth";
+import { addUser, updateUserImage } from "redux/userSlice";
+import { validateUser, getUserImage } from "services/auth";
+import { toast } from "react-toastify";
+import { API_URL } from "constants";
+
+const access_token = "access-token";
 
 const authenticatedRoute = (Component = null, options = {}) => {
   class AuthenticatedRoute extends React.Component {
@@ -11,17 +15,21 @@ const authenticatedRoute = (Component = null, options = {}) => {
     };
 
     async componentDidMount() {
-      const { user } = this.props;
+      const { user, addUser, updateUserImage } = this.props;
       if (user) {
         this.setState({ loading: false });
-      } else {
-        const { data } = await validateUser();
-        if (data.data) {
+      } else if (localStorage.getItem(access_token)) {
+        try {
+          const { data } = await validateUser();
           addUser(data.data);
+          const res = await getUserImage();
+          updateUserImage(API_URL + res.data);
           this.setState({ loading: false });
-        } else {
-          Router.push(options.pathAfterFailure || "/auth/login");
+        } catch (ex) {
+          toast.error(ex.response?.data?.errors[0]);
         }
+      } else {
+        Router.push(options.pathAfterFailure || "/auth/login");
       }
     }
 
@@ -40,9 +48,7 @@ const authenticatedRoute = (Component = null, options = {}) => {
     (state) => ({
       user: state.user.user,
     }),
-    () => ({
-      addUser,
-    })
+    { addUser, updateUserImage }
   )(AuthenticatedRoute);
 };
 

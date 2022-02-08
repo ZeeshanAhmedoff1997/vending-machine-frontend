@@ -31,8 +31,21 @@ export const signin = async (values) => {
   return data;
 };
 
-export const validateUser = () => {
-  return Axios.get(apiEndpoint + "/validate_token");
+export const updateuser = (values) => {
+  debugger;
+  return Axios.put(apiEndpoint + "", values);
+};
+
+export const getUserImage = () => {
+  return Axios.get(API_URL + "/api/v1/profile/image");
+};
+
+export const deleteUser = () => {
+  return Axios.delete(apiEndpoint);
+};
+
+export const validateUser = async () => {
+  return await Axios.get(apiEndpoint + "validate_token");
 };
 
 export const logout = () => {

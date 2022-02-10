@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CustomImage from "./common/Image";
+import CustomImage from "../common/Image";
 import avatar from "public/img_avatar.png";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -83,7 +83,7 @@ const UserDetails = ({}) => {
     ).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await deleteUser();
+          await deleteUser();
           appDispatch(removeUser());
           await logout();
           toast.success("Successfully deleted");

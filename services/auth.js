@@ -5,7 +5,8 @@ const client = "client";
 const uid = "uid";
 const access_token = "access-token";
 
-const setTokens = () => {
+export const setTokens = () => {
+  console.log("set token is called");
   try {
     Axios.defaults.headers.common[client] = localStorage.getItem(client);
     Axios.defaults.headers.common[uid] = localStorage.getItem(uid);
@@ -16,23 +17,26 @@ const setTokens = () => {
   } catch (ex) {}
 };
 
-setTokens();
-
-export const signup = (values) => {
-  return Axios.post(apiEndpoint + "", values);
-};
-
-export const signin = async (values) => {
-  const { data, headers } = await Axios.post(apiEndpoint + "sign_in", values);
+const saveTokens = (headers, data) => {
   localStorage.setItem(client, headers[client]);
   localStorage.setItem(uid, headers[uid]);
   localStorage.setItem(access_token, headers[access_token]);
   localStorage.setItem("id", data.data.id);
+  setTokens();
   return data;
 };
 
+export const signup = async (values) => {
+  const { data, headers } = await Axios.post(apiEndpoint + "", values);
+  return saveTokens(headers, data);
+};
+
+export const signin = async (values) => {
+  const { data, headers } = await Axios.post(apiEndpoint + "sign_in", values);
+  return saveTokens(headers, data);
+};
+
 export const updateuser = (values) => {
-  debugger;
   return Axios.put(apiEndpoint + "", values);
 };
 

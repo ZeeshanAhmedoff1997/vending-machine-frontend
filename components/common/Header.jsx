@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "components/common/Link";
 import { useSelector } from "react-redux";
-import { isSignedIn } from "utils/alert";
+import { isSeller, isSignedIn } from "utils/alert";
 import { logout } from "services/auth";
 import { useRouter } from "next/router";
 import { useAppDispatch } from "redux/hooks";
@@ -64,15 +64,17 @@ const Header = () => {
                     Account
                   </Link>
                 </li>
-                <li className="nav-item c-nav-item">
-                  <Link
-                    className="nav-link active"
-                    aria-current="page"
-                    href="/"
-                  >
-                    Product
-                  </Link>
-                </li>
+                {isSeller(user) && (
+                  <li className="nav-item c-nav-item">
+                    <Link
+                      className="nav-link active"
+                      aria-current="page"
+                      href="/user/products"
+                    >
+                      Product
+                    </Link>
+                  </li>
+                )}
                 <li className="nav-item c-nav-item">
                   <Link
                     className="nav-link active"

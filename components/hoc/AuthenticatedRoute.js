@@ -24,6 +24,9 @@ const authenticatedRoute = (Component = null, options = {}) => {
           addUser(data.data);
           const res = await getUserImage();
           updateUserImage(API_URL + res.data);
+          if (options.role && data.data.role !== options.role) {
+            Router.push("/");
+          }
           this.setState({ loading: false });
         } catch (ex) {
           toast.error(ex.response?.data?.errors[0]);

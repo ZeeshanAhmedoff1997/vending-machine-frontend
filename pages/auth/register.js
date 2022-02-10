@@ -46,15 +46,12 @@ const Register = () => {
 
   const onSubmit = async (user) => {
     try {
-      const {
-        data: { data },
-      } = await signup(user);
+      const { data } = await signup(user);
       appDispatch(addUser(data));
       toast.success("Successfully registered");
       router.push("/");
     } catch (err) {
-      console.log("error", err.response.data.errors.full_messages[0]);
-      toast.error(err.response.data.errors.full_messages[0]);
+      toast.error(err.response?.data?.errors?.full_messages[0]);
     }
   };
 

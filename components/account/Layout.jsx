@@ -1,9 +1,9 @@
 import Header from "components/common/Header";
 
-function Layout({ children, col = 4, offst = 4 }) {
+function Layout({ children, col = 4, offst = 4, noHeader }) {
   return (
     <>
-      <Header />
+      {!noHeader && <Header />}
       <div className="container">
         <div className={`col-md-${col} offset-md-${offst} mt-5`}>
           {children}
